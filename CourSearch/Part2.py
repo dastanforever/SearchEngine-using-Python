@@ -52,18 +52,19 @@ def diglinks(url,maxpages,depth):   # depth = 1 is ground
     level = 0
     while maxpages > 0 and len(tocrawl) > 0 and depth > level:
         a = tocrawl.pop(0)
-        page = get_page(a)
-        links = get_all_links(page)
-        unionlist(tocrawl,links)
-        crawled.append(a)
-        maxpages -= 1
-        num_link_level += len(links)
-        loop_iterated += 1
-        if num_link_prev_level <= loop_iterated:
-            level += 1
-            loop_iterated = 0
-            num_link_prev_level = num_link_level
-            num_link_level = 0
+        if a not in crawled:
+            page = get_page(a)
+            links = get_all_links(page)
+            unionlist(tocrawl,links)
+            crawled.append(a)
+            maxpages -= 1
+            num_link_level += len(links)
+            loop_iterated += 1
+            if num_link_prev_level <= loop_iterated:
+                level += 1
+                loop_iterated = 0
+                num_link_prev_level = num_link_level
+                num_link_level = 0
     return crawled
 
 print(diglinks('http://www.tecnoesis.in',20,3))
